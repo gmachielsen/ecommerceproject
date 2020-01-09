@@ -154,3 +154,8 @@ body {
   background-image: none !important;
   background: none !important;
 }
+
+.errorlist li {
+  color: red;
+  font-weight: bold;
+}

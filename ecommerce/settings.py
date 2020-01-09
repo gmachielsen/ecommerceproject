@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cart',
+    'crispy_forms',
     'order',
     'search_app',
     'shop',
@@ -135,3 +136,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'static','media')
 
 STRIPE_PUBLISHABLE_KEY = 'pk_test_xwkxNTrSC2zwYi6XtU1LVe8B00doF4DJ0Z'
 STRIPE_SECRET_KEY = 'sk_test_TyCOjUtqw9ynVT97zZkpEN4300spxJ2H4v'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

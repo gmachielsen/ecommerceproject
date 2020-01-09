@@ -99,7 +99,7 @@ def cart_detail(request, total=0, counter=0, cart_items = None):
 					products.stock = int(order_item.product.stock - order_item.quantity)
 					products.save()
 					order_item.delete()
-				return redirect('shop:allProdCat')
+				return redirect('order:thanks', order_details.id)
 			except ObjectDoesNotExist:
 				pass
 		except stripe.error.CardError as e:
