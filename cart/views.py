@@ -5,6 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import stripe
 from django.conf import settings
 from order.models import Order, OrderItem
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
 
 def _cart_id(request):
 	cart = request.session.session_key
@@ -99,6 +101,11 @@ def cart_detail(request, total=0, counter=0, cart_items = None):
 					products.stock = int(order_item.product.stock - order_item.quantity)
 					products.save()
 					order_item.delete()
+				try:
+					sendEmail(order_details.id)
+					print('The order has been created')
+				except IOEError as e:
+					return e
 				return redirect('order:thanks', order_details.id)
 			except ObjectDoesNotExist:
 				pass
@@ -125,3 +132,21 @@ def cart_remove(request, product_id):
     else:
         cart_item.delete()
     return redirect('cart:cart_detail')
+
+def sendEmail(order_id):
+	transaction = Order.objects.get(id=order_id)
+	order_items = OrderItem.objects.filter(order=transaction)
+	try:
+		subject = "New Order #{}".format(transaction.id)
+		to = ['{}'.format(transaction.emailAddress)]
+		from_email = "orders@perfectcushionstore.com"
+		order_information = {
+		'transaction' : tranaction,
+		'order_items' : order_items
+		}
+		message = get_template('email/email.html').render(order_information)
+		msg = EmailMessage(subject, message, to=to, from_email=from_email)
+		msg.content_subtype = 'html'
+		msg.send()
+	except IOError as e:
+		return e
