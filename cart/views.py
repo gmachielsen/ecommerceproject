@@ -79,6 +79,8 @@ def cart_detail(request, total=0, counter=0, cart_items = None):
 						token = token,
 						total = total,
 						emailAddress = email,
+						billingAddress1 = billingAddress1,
+						billingName = billingName,
 						billingCity = billingCity,
 						billingPostcode = billingPostcode,
 						billingCountry = billingCountry,
@@ -89,6 +91,7 @@ def cart_detail(request, total=0, counter=0, cart_items = None):
 						shippingCountry = shippingCountry
 					)
 				order_details.save()
+				print(order_details)
 				for order_item in cart_items:
 					oi = OrderItem.objects.create(
 						product = order_item.product.name,
@@ -97,14 +100,16 @@ def cart_detail(request, total=0, counter=0, cart_items = None):
 						order = order_details
 						)
 					oi.save()
+					print(oi)
 					products = Product.objects.get(id=order_item.product.id)
 					products.stock = int(order_item.product.stock - order_item.quantity)
 					products.save()
 					order_item.delete()
+					print(products.stock)
 				try:
 					sendEmail(order_details.id)
 					print('The order has been created')
-				except IOEError as e:
+				except IOError as e:
 					return e
 				return redirect('order:thanks', order_details.id)
 			except ObjectDoesNotExist:
@@ -141,7 +146,7 @@ def sendEmail(order_id):
 		to = ['{}'.format(transaction.emailAddress)]
 		from_email = "orders@perfectcushionstore.com"
 		order_information = {
-		'transaction' : tranaction,
+		'transaction' : transaction,
 		'order_items' : order_items
 		}
 		message = get_template('email/email.html').render(order_information)

@@ -81,10 +81,17 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
     }
 }
 
@@ -143,3 +150,7 @@ EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'sandbox64914b5d7e50482abce36b19f55f1639.mailgun.org'
 EMAIL_HOST_PASSWORD = 'sandbox64914b5d7e50482abce36b19f55f1639'
 EMAIL_USE_TLS = True
+
+DATE_INPUT_FORMATS = [
+    '%m/%d/%Y',
+]
