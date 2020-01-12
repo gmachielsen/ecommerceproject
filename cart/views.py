@@ -7,6 +7,9 @@ from django.conf import settings
 from order.models import Order, OrderItem
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
+# from order.models import Order, OrderItem
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.models import Group, User
 
 def _cart_id(request):
 	cart = request.session.session_key
@@ -109,6 +112,8 @@ def cart_detail(request, total=0, counter=0, cart_items = None):
 				try:
 					sendEmail(order_details.id)
 					print('The order has been created')
+					print(request.user)
+					print(request.user.email)
 				except IOError as e:
 					return e
 				return redirect('order:thanks', order_details.id)
@@ -118,6 +123,29 @@ def cart_detail(request, total=0, counter=0, cart_items = None):
 			return False,e
 
 	return render(request, 'cart.html', dict(cart_items= cart_items, total = total, counter= counter, data_key= data_key, stripe_total= stripe_total, description= description))
+
+# @login_required()
+# def orderHistory(request):
+#     user = request.user
+#     print(user)
+#     if user.is_authenticated:
+#         email = User.objects.get(email=request.user.email)
+#         order_details = Order.objects.filter(emailAddress=email)
+#     return render(request, 'order/orderslist.html', {'order_details':order_details})
+#
+# @login_required()
+# def viewOrder(request, order_id):
+# 	if request.user.is_authenticated:
+# 	    email = str(request.user.email)
+# 	    order = Order.objects.get(id=order_id, emailAddress=email)
+# 	    order_items = OrderItem.objects.filter(order=order)
+# 	return render(request, 'order/orderdetail.html', {'order':order, 'order_item':order_item})
+#
+#
+# def thanks(request, order_id):
+#     if order_id:
+#         customer_order = get_object_or_404(Order, id=order_id)
+#     return render(request, 'thanks.html', {'customer_order': customer_order})
 
 
 def full_remove(request, product_id):
