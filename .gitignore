@@ -1,0 +1,6 @@
+*.sglite3
+__pycache__
+env.py
+*.png
+static/
+media/
