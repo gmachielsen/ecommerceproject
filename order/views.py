@@ -5,15 +5,10 @@ from django.contrib.auth.decorators import login_required
 @login_required()
 def orderHistory(request):
     user = request.user
-    print(user)
-    print(user.email)
-    print(user.first_name)
-    print(user.last_name)
-    print(user.username)
     if user.is_authenticated:
         email = str(request.user.email)
         order_details = Order.objects.filter(emailAddress=email)
-    return render(request, 'order/orderslist.html', {'order_details':order_details})
+    return render(request, 'order/orders.html', {'order_details':order_details})
 
 @login_required()
 def viewOrder(request, order_id):

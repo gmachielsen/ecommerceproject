@@ -10,7 +10,7 @@ from django.contrib.auth import login, authenticate, logout
 # Create your views here.
 def index(request):
 	text_var = 'This is my first django app web page.'
-	return HttpResponse(text_var)
+	return render(request, 'index.html', dict(text_var= text_var))
 
 #Category view
 
